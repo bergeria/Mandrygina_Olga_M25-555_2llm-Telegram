@@ -1,3 +1,10 @@
+"""
+Инфраструктурный модуль Redis.
+
+Предоставляет singleton Redis-клиент
+для хранения JWT и кэширования.
+"""
+
 from redis.asyncio import Redis
 
 from app.core.config import settings

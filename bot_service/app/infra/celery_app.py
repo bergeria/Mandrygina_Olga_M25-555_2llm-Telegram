@@ -1,3 +1,12 @@
+"""
+Конфигурация Celery-приложения.
+
+Настраивает:
+- RabbitMQ broker
+- Redis result backend
+- автоматическое подключение задач
+"""
+
 from celery import Celery
 
 from app.core.config import settings

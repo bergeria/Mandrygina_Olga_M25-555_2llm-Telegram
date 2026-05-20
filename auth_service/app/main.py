@@ -1,3 +1,18 @@
+"""
+Точка входа Auth Service.
+
+Создаёт экземпляр FastAPI,
+инициализирует таблицы базы данных
+во время запуска приложения,
+подключает роутеры и health-check endpoint.
+
+Сервис отвечает только за:
+- регистрацию пользователей
+- аутентификацию
+- выпуск JWT-токенов
+- проверку JWT
+"""
+
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI

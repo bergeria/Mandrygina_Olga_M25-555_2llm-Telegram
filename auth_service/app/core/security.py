@@ -1,3 +1,13 @@
+"""
+Модуль безопасности Auth Service.
+
+Предоставляет:
+- хеширование паролей через bcrypt
+- проверку паролей
+- создание JWT
+- декодирование и проверку JWT
+"""
+
 from datetime import UTC, datetime, timedelta
 from typing import Any
 

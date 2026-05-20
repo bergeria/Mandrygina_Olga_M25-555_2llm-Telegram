@@ -1,3 +1,13 @@
+"""
+FastAPI dependencies Auth Service.
+
+Содержит:
+- dependency для БД
+- фабрики репозиториев
+- фабрики usecase
+- зависимости проверки JWT
+"""
+
 from collections.abc import AsyncGenerator
 from typing import Annotated
 

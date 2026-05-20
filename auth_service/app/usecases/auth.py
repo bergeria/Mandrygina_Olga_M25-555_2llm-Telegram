@@ -1,3 +1,15 @@
+"""
+Бизнес-логика Auth Service.
+
+Реализует:
+- регистрацию пользователя
+- логин пользователя
+- получение текущего пользователя
+
+Координирует работу репозиториев,
+security utilities и правил валидации.
+"""
+
 from app.core.exceptions import (
     InvalidCredentialsError,
     UserAlreadyExistsError,

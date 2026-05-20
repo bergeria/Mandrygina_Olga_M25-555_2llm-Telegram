@@ -1,3 +1,11 @@
+"""
+Pydantic-схемы, связанные с аутентификацией.
+
+Содержит:
+- схемы регистрации
+- схемы JWT-токенов
+"""
+
 from pydantic import BaseModel, EmailStr, Field
 
 

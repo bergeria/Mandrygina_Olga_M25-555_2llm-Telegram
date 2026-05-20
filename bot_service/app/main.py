@@ -1,3 +1,12 @@
+"""
+Точка входа Bot Service.
+
+Создаёт экземпляр FastAPI
+и предоставляет health-check endpoint.
+
+Telegram-бот запускается отдельно.
+"""
+
 from fastapi import FastAPI
 
 from app.core.config import settings

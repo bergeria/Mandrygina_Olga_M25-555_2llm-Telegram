@@ -1,3 +1,12 @@
+"""
+Маршруты аутентификации Auth Service.
+
+Предоставляет endpoint-ы:
+- регистрация пользователя
+- логин пользователя
+- получение профиля текущего пользователя
+"""
+
 from typing import Annotated
 
 from fastapi import APIRouter, Depends

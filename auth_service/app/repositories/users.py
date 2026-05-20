@@ -1,3 +1,10 @@
+"""
+Репозиторий для работы с пользователями.
+
+Реализует низкоуровневые CRUD-операции
+для модели User через SQLAlchemy.
+"""
+
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 

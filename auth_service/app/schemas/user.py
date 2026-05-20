@@ -1,3 +1,10 @@
+"""
+Публичные схемы пользователя.
+
+Содержит безопасное представление пользователя
+без чувствительных данных, например password_hash.
+"""
+
 from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict, EmailStr

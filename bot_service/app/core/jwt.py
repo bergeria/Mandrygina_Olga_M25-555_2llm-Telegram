@@ -1,3 +1,13 @@
+"""
+Модуль проверки JWT в Bot Service.
+
+Bot Service не создаёт JWT-токены,
+а только проверяет:
+- подпись токена
+- срок действия
+- обязательные claims
+"""
+
 from typing import Any
 
 from jose import ExpiredSignatureError, JWTError, jwt

@@ -1,3 +1,15 @@
+"""
+Модуль конфигурации Bot Service.
+
+Загружает переменные окружения
+и предоставляет настройки:
+- Telegram Bot
+- Redis
+- RabbitMQ
+- OpenRouter
+- JWT
+"""
+
 from pathlib import Path
 
 from pydantic_settings import BaseSettings, SettingsConfigDict

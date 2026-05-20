@@ -141,10 +141,28 @@ uv run python
 потом ввести команды
 
 from app.tasks.llm_tasks import llm_request
-task = llm_request.delay("Привет! Здесь Ваш вопрос ???")
+task = llm_request.delay("Привет! When was founded L'Oreal company ? ???")
 task.get(timeout=120)
 
 если все .env файлы заполнены корректными данными, то Вы должны получить ответ от OpenRouter
+
+
+Если ответ получен - дальше запускаем бота
+
+В отдельном терминале из bot_service
+
+uv run python -m app.bot.run_bot
+
+Далее в Telegram:
+
+/start
+
+потом:
+
+/token <JWT_из_Auth_Service>
+
+на этом этапе - бот только ставит задачу в очередь и пишет Task ID.
+
 
 
 

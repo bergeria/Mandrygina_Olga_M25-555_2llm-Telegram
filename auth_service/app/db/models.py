@@ -1,3 +1,10 @@
+"""
+ORM-модели Auth Service.
+
+Содержит определения таблиц базы данных:
+- User
+"""
+
 from datetime import datetime
 
 from sqlalchemy import DateTime, String, func

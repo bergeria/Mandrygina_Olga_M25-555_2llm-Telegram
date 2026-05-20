@@ -1,3 +1,10 @@
+"""
+Клиент OpenRouter API.
+
+Реализует асинхронное взаимодействие
+с OpenRouter chat completion API.
+"""
+
 import httpx
 
 from app.core.config import settings
