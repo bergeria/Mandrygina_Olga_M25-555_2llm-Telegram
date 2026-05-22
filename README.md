@@ -82,9 +82,15 @@ Telegram User
 │   │   │
 │   │   └── main.py                        # Точка входа FastAPI Auth Service
 │   │
-│   ├── .env.example                       # Пример окружения Auth Service
+│   ├── tests/                             # Тесты Auth Service
+│   │   ├── __init__.py
+│   │   ├── conftest.py                    # Общие pytest-фикстуры
+│   │   ├── test_security_unit.py          # Unit-тесты security-функций
+│   │   └── test_auth_integration.py       # Интеграционные HTTP-тесты Auth API
+│   │
+│   ├── .env                               # Переменные окружения Auth Service
 │   ├── auth.db                            # SQLite база данных
-│   ├── pyproject.toml                     # Зависимости auth_service (uv)
+│   ├── pyproject.toml                     # Зависимости auth_service через uv
 │   ├── pytest.ini                         # Настройки pytest
 │   └── uv.lock                            # Lock-файл зависимостей uv
 │
@@ -92,7 +98,7 @@ Telegram User
 │   ├── app/                               # Исходный код Bot Service
 │   │   ├── __init__.py
 │   │   │
-│   │   ├── bot/                           # Telegram Bot (aiogram)
+│   │   ├── bot/                           # Telegram Bot на aiogram
 │   │   │   ├── __init__.py
 │   │   │   ├── dispatcher.py              # Bot и Dispatcher aiogram
 │   │   │   ├── handlers.py                # Telegram handlers
@@ -118,18 +124,24 @@ Telegram User
 │   │   │
 │   │   └── main.py                        # FastAPI health API Bot Service
 │   │
-│   ├── .env.example                       # Пример окружения Bot Service
-│   ├── pyproject.toml                     # Зависимости bot_service (uv)
+│   ├── tests/                             # Тесты Bot Service
+│   │   ├── __init__.py
+│   │   ├── conftest.py                    # Общие pytest-фикстуры
+│   │   ├── test_jwt_unit.py               # Unit-тесты проверки JWT
+│   │   ├── test_handlers_mock.py          # Mock-тесты Telegram handlers
+│   │   └── test_openrouter_integration.py # Интеграционные тесты OpenRouter-клиента
+│   │
+│   ├── .env                               # Переменные окружения Bot Service
+│   ├── pyproject.toml                     # Зависимости bot_service через uv
 │   ├── pytest.ini                         # Настройки pytest
 │   └── uv.lock                            # Lock-файл зависимостей uv
 │
 ├── docker-compose.yml                     # Redis + RabbitMQ контейнеры
+├── start.sh                               # Запуск проекта одним скриптом
+├── stop.sh                                # Остановка проекта
 ├── README.md                              # Документация проекта и запуск
 ├── .env.example                           # Пример переменных окружения
-├── start.sh                               # Скрипт запуска проекта
-├── stop.sh                                # Скрипт остановки проекта
 └── .gitignore                             # Исключения Git
-
 
 
 Пререквизиты
@@ -312,8 +324,6 @@ celery ready
 uv run python -m app.bot.run_bot
 
 
-
-
 Основные команды запуска - собрано в одно место файла.
 
 Терминал 1 — инфраструктура
@@ -322,6 +332,7 @@ docker-compose up -d
 или:
 
 docker compose up -d
+
 Терминал 2 — Auth Service
 из папки auth_service
 uv run uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
@@ -394,8 +405,8 @@ POST /auth/register
 
 
 # Далее выполнить логин:
-POST /auth/login
-
+# Выберите пункт - POST /auth/login и нажмите кнопку 'Try it out'
+# заполните логин и пароль, и потом нажмите 'Execute'
 # Скопировать полученный JWT-токен.
 
 #Отправить токен Telegram-боту:
@@ -405,6 +416,22 @@ POST /auth/login
 Например - "Что такое Celery?"
 
 #Бот отправит задачу в RabbitMQ, Celery Worker обработает её, вызовет OpenRouter и вернёт ответ в Telegram.
+
+
+Запуск тестов
+
+Auth Service
+
+в каталоге auth_service выполнить
+
+uv run pytest
+
+Bot Service
+
+в каталоге bot_service выполнить
+
+uv run pytest
+
 
 
 

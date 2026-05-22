@@ -20,9 +20,11 @@ from app.tasks.llm_tasks import llm_request
 router = Router()
 
 
-def token_key(user_id: int) -> str:
-    return f"telegram:user:{user_id}:jwt"
+#def token_key(user_id: int) -> str:
+#    return f"telegram:user:{user_id}:jwt"
 
+def token_key(user_id: int) -> str:
+    return f"token:{user_id}"
 
 @router.message(Command("start"))
 async def start(message: Message) -> None:
