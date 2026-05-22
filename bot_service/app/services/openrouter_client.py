@@ -48,11 +48,12 @@ class OpenRouterClient:
                     json=payload,
                 )
         except httpx.HTTPError as exc:
-            raise OpenRouterError(f"OpenRouter request failed: {exc}") from exc
+            raise OpenRouterError(f"Запрос к OpenRouter завершился с ошибкой:"
+                                  f"{exc}") from exc
 
         if response.status_code >= 400:
             raise OpenRouterError(
-                f"OpenRouter returned {response.status_code}: {response.text}"
+                f"OpenRouter вернул {response.status_code}: {response.text}"
             )
 
         data = response.json()
@@ -60,4 +61,4 @@ class OpenRouterClient:
         try:
             return data["choices"][0]["message"]["content"]
         except (KeyError, IndexError, TypeError) as exc:
-            raise OpenRouterError("Invalid OpenRouter response format") from exc
+            raise OpenRouterError("Неверный формат ответа от OpenRouter") from exc

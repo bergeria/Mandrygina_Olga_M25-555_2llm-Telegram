@@ -19,10 +19,9 @@ from fastapi import FastAPI
 
 from app.api.router import router as api_router
 from app.core.config import settings
+from app.db import models  # noqa: F401
 from app.db.base import Base
 from app.db.session import engine
-
-from app.db import models  # noqa: F401
 
 
 @asynccontextmanager

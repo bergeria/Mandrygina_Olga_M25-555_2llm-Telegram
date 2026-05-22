@@ -9,7 +9,6 @@ from redis.asyncio import Redis
 
 from app.core.config import settings
 
-
 _redis: Redis | None = None
 
 

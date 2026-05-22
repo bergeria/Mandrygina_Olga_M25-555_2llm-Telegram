@@ -18,7 +18,6 @@ from app.schemas.auth import RegisterRequest, TokenResponse
 from app.schemas.user import UserPublic
 from app.usecases.auth import AuthUseCase
 
-
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 

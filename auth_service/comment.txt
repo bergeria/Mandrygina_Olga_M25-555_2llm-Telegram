@@ -1,4 +1,0 @@
-Потом в PyCharm для проекта auth_service выбери интерпретатор:
-
-auth_service/.venv/Scripts/python.exe
-

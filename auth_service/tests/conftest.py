@@ -23,7 +23,6 @@ from app.api.deps import get_db
 from app.db.base import Base
 from app.main import app
 
-
 TEST_DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 
 

@@ -21,29 +21,29 @@ class BaseHTTPException(HTTPException):
 
 class UserAlreadyExistsError(BaseHTTPException):
     status_code = status.HTTP_409_CONFLICT
-    detail = "User already exists"
+    detail = "Пользователь уже существует !"
 
 
 class InvalidCredentialsError(BaseHTTPException):
     status_code = status.HTTP_401_UNAUTHORIZED
-    detail = "Invalid email or password"
+    detail = "Неверный email или пароль !"
 
 
 class InvalidTokenError(BaseHTTPException):
     status_code = status.HTTP_401_UNAUTHORIZED
-    detail = "Invalid token"
+    detail = "Неверный token !"
 
 
 class TokenExpiredError(BaseHTTPException):
     status_code = status.HTTP_401_UNAUTHORIZED
-    detail = "Token expired"
+    detail = "Token просрочен !"
 
 
 class UserNotFoundError(BaseHTTPException):
     status_code = status.HTTP_404_NOT_FOUND
-    detail = "User not found"
+    detail = "Пользователь не найден !"
 
 
 class PermissionDeniedError(BaseHTTPException):
     status_code = status.HTTP_403_FORBIDDEN
-    detail = "Permission denied"
+    detail = "Недостаточно прав !"

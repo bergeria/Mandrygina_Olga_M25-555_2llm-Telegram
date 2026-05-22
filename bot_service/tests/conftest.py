@@ -12,15 +12,16 @@
 from dataclasses import dataclass
 
 import fakeredis.aioredis
-import pytest
+import pytest_asyncio
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def fake_redis():
-    redis = fakeredis.aioredis.FakeRedis(decode_responses=True)
+    redis = fakeredis.aioredis.FakeRedis(
+        decode_responses=True,
+    )
     yield redis
     await redis.aclose()
-
 
 @dataclass
 class FakeUser:

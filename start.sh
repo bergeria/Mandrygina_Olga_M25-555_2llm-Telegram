@@ -9,8 +9,9 @@ else
   docker compose up -d
 fi
 
-echo "Ждем запуск контейнеров - 10 секунд..."
-sleep 10
+echo "Ждем запуск контейнеров - 15 секунд..."
+sleep 15
+
 
 echo "Запуск  Auth Service..."
 cd auth_service

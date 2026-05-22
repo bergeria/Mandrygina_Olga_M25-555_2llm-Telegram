@@ -17,7 +17,6 @@ from pwdlib.hashers.bcrypt import BcryptHasher
 
 from app.core.config import settings
 
-
 password_hash = PasswordHash((BcryptHasher(),))
 
 

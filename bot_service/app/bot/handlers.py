@@ -16,12 +16,7 @@ from app.core.jwt import decode_and_validate
 from app.infra.redis import get_redis
 from app.tasks.llm_tasks import llm_request
 
-
 router = Router()
-
-
-#def token_key(user_id: int) -> str:
-#    return f"telegram:user:{user_id}:jwt"
 
 def token_key(user_id: int) -> str:
     return f"token:{user_id}"
@@ -70,8 +65,8 @@ async def handle_text(message: Message) -> None:
         decode_and_validate(token)
     except ValueError:
         await redis.delete(token_key(message.from_user.id))
-        await message.answer(
-            "Токен неверный или истёк. Получи новый в Auth Service и отправь /token заново."
+        await message.answer("Токен неверный или истёк."
+                             " Получи новый в Auth Service и отправь /token заново."
         )
         return
 

@@ -16,6 +16,7 @@
 9.  Redis как backend и хранилище состояния;
 10. OpenRouter как LLM-провайдер;
 11. отправка ответа пользователю обратно в Telegram.
+12. Тесты
 
 Проект состоит из двух независимых сервисов:
 
@@ -191,7 +192,7 @@ sudo systemctl enable --now docker
 docker --version
 docker compose version
 
-Установка uv  ????
+Установка uv
 
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
@@ -202,6 +203,10 @@ source ~/.bashrc
 Проверка:
 
 uv --version
+
+Установка ruff
+
+В корне проекта выполните uv add --dev ruff
 
 
 Настройка Auth Service
@@ -221,10 +226,12 @@ SQLITE_PATH=./auth.db
 
 
 Установите зависимости:
+В папке auth_service выполните 
 
 uv sync
 
 Запуск Auth Service:
+В папке auth_service выполните
 
 uv run uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 
@@ -263,6 +270,7 @@ OPENROUTER_APP_NAME=bot-service
 Важно: JWT_SECRET в auth_service/.env и bot_service/.env должен совпадать.
 
 Установите зависимости:
+В папке bot_service выполните
 
 uv sync
 
@@ -432,6 +440,32 @@ Bot Service
 
 uv run pytest
 
+
+Screenshots
+
+# Далее скриншоты - демонстрация работы Auth_service и Телеграмм бота.
+
+
+# Регистрация пользователя
+![Register](screenshots/register.png)
+
+# Логин пользователя - логин и получение JWT
+![Login](screenshots/login.png)
+
+# Чат в Telegram-bot
+![Chat](screenshots/chat.png)
+
+# RabbitMQ - Overview
+![RabbitMQ01](screenshots/RabbitMQ01.png)
+
+# RabbitMQ - Queues
+![RabbitMQ02](screenshots/RabbitMQ02.png)
+
+# Тест Test_Auth_Service
+![Test_Auth_Service](screenshots/test_auth_service.png)
+
+# Тест Test_Bot_Service
+![Bot_Auth_Service](screenshots/test_bot_service.png)
 
 
 

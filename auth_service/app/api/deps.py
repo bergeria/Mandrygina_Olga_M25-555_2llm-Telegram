@@ -22,7 +22,6 @@ from app.db.session import AsyncSessionLocal
 from app.repositories.users import UsersRepository
 from app.usecases.auth import AuthUseCase
 
-
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 
