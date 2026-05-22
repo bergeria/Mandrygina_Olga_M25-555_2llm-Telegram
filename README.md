@@ -1,29 +1,36 @@
-еще не готово - тесты и демо.
-
-
-
 # Двухсервисная система LLM-консультаций
 
-Реализовано
-1.  регистрация пользователя;
-2.  логин пользователя;
-3.  хранение пароля в виде bcrypt-хеша;
-4.  выпуск JWT-токена;
-5.  проверка JWT в Telegram Bot Service;
-6.  хранение JWT в Redis по Telegram user_id;
-7.  отправка LLM-запросов через Celery;
-8.  RabbitMQ как брокер задач;
-9.  Redis как backend и хранилище состояния;
-10. OpenRouter как LLM-провайдер;
-11. отправка ответа пользователю обратно в Telegram.
-12. Тесты
+Проект представляет собой распределённую систему LLM-консультаций, состоящую из двух независимых сервисов:
 
-Проект состоит из двух независимых сервисов:
+- **Auth Service** — регистрация пользователей, логин и выпуск JWT-токенов.
+- **Bot Service** — Telegram-бот, проверка JWT и асинхронная обработка LLM-запросов.
 
-- **Auth Service** — регистрация пользователей, логин, выпуск JWT-токенов.
-- **Bot Service** — Telegram-бот, проверка JWT, отправка LLM-запросов через очередь.
+Система построена по принципу разделения ответственности:
 
-Архитектура:
+- Auth Service отвечает только за пользователей и JWT.
+- Bot Service не хранит пользователей и не обращается к базе Auth Service.
+- Bot Service доверяет только корректно подписанному JWT.
+
+---
+
+# Реализовано
+
+- регистрация пользователя;
+- логин пользователя;
+- хранение пароля в виде bcrypt-хеша;
+- выпуск JWT-токена;
+- проверка JWT в Telegram Bot Service;
+- хранение JWT в Redis по Telegram user_id;
+- отправка LLM-запросов через Celery;
+- RabbitMQ как брокер задач;
+- Redis как backend и хранилище состояния;
+- OpenRouter как LLM-провайдер;
+- отправка ответа пользователю обратно в Telegram;
+- unit / integration / mock тесты.
+
+---
+
+# Архитектура
 
 ```text
 Telegram User
@@ -41,10 +48,35 @@ Celery Worker
 OpenRouter API
     ↓
 Telegram User
+```
 
+---
 
-#Структура проекта
+# Используемые технологии
 
+- FastAPI
+- aiogram
+- SQLAlchemy Async
+- SQLite
+- Redis
+- RabbitMQ
+- Celery
+- OpenRouter
+- httpx
+- pytest
+- pytest-asyncio
+- fakeredis
+- pytest-mock
+- respx
+- Docker
+- uv
+- Ruff
+
+---
+
+# Структура проекта
+
+```text
 .
 ├── auth_service/
 │   ├── app/                               # Исходный код Auth Service
@@ -137,6 +169,15 @@ Telegram User
 │   ├── pytest.ini                         # Настройки pytest
 │   └── uv.lock                            # Lock-файл зависимостей uv
 │
+├── screenshots/
+│   ├── register.png
+│   ├── login.png
+│   ├── chat.png
+│   ├── rabbitmq_overview.png
+│   ├── rabbitmq_queues.png
+│   ├── test_auth_service.png
+│   └── test_bot_service.png
+│
 ├── docker-compose.yml                     # Redis + RabbitMQ контейнеры
 ├── start.sh                               # Запуск проекта одним скриптом
 ├── stop.sh                                # Остановка проекта
@@ -144,77 +185,118 @@ Telegram User
 ├── .env.example                           # Пример переменных окружения
 └── .gitignore                             # Исключения Git
 
+```
 
-Пререквизиты
+---
 
-Python 3.11+
-uv
-Docker
-Docker Compose
-Telegram Bot Token - для этого Telegram бот уже должен быть создан
-OpenRouter API Key
+# Требования
 
-Установка системных зависимостей - Debian / Ubuntu
+- Python 3.11+
+- uv
+- Docker
+- Docker Compose
+- Telegram Bot Token
+- OpenRouter API Key
 
+---
+
+# Установка системных зависимостей
+
+## Debian / Ubuntu
+
+```bash
 sudo apt update
 sudo apt install -y curl git python3 python3-venv
+```
 
-Установка Docker из репозиториев дистрибутива:
+### Установка Docker
 
+```bash
 sudo apt install -y docker.io docker-compose
 sudo systemctl enable docker
 sudo systemctl start docker
+```
 
-Проверка:
+### Проверка
 
+```bash
 docker --version
 docker-compose --version
+```
 
-На некоторых системах вместо docker-compose используется новая команда:
+На некоторых системах вместо `docker-compose` используется:
 
+```bash
 docker compose version
+```
 
+---
 
-Установка системных зависимостей в - Red Hat / Fedora
+## Fedora / Red Hat
 
+```bash
 sudo dnf update -y
 sudo dnf install -y curl git python3
+```
 
-Установка Docker:
+### Установка Docker
 
+```bash
 sudo dnf install -y dnf-plugins-core
 sudo dnf config-manager addrepo --from-repofile https://download.docker.com/linux/fedora/docker-ce.repo
-sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+sudo dnf install -y \
+docker-ce \
+docker-ce-cli \
+containerd.io \
+docker-buildx-plugin \
+docker-compose-plugin
+```
+
+```bash
 sudo systemctl enable --now docker
+```
 
-Проверка:
+### Проверка
 
+```bash
 docker --version
 docker compose version
+```
 
-Установка uv
+---
 
+# Установка uv
+
+```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
+```
 
-После установки перезапустите терминал или выполните:
+После установки:
 
+```bash
 source ~/.bashrc
+```
 
 Проверка:
 
+```bash
 uv --version
+```
 
-Установка ruff
+---
 
-В корне проекта выполните uv add --dev ruff
+# Настройка Auth Service
 
+Перейти в каталог:
 
-Настройка Auth Service
+```bash
+cd auth_service
+```
 
-В папке auth_service:
+Создать `.env`:
 
-Создайте .env:
-
+```env
 APP_NAME=auth-service
 ENV=local
 
@@ -223,33 +305,49 @@ JWT_ALG=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=60
 
 SQLITE_PATH=./auth.db
+```
 
+Установить зависимости:
 
-Установите зависимости:
-В папке auth_service выполните 
-
+```bash
 uv sync
+```
 
-Запуск Auth Service:
-В папке auth_service выполните
+---
 
+# Запуск Auth Service
+
+Из каталога `auth_service`:
+
+```bash
 uv run uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
 
 Swagger:
 
+```text
 http://127.0.0.1:8000/docs
+```
 
 Health-check:
 
+```text
 http://127.0.0.1:8000/health
+```
 
+---
 
-Настройка Bot Service
+# Настройка Bot Service
 
-В папке bot_service:
+Перейти в каталог:
 
-Создайте .env:
+```bash
+cd bot_service
+```
 
+Создать `.env`:
+
+```env
 APP_NAME=bot-service
 ENV=local
 
@@ -266,213 +364,319 @@ OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
 OPENROUTER_MODEL=stepfun/step-3.5-flash:free
 OPENROUTER_SITE_URL=https://example.com
 OPENROUTER_APP_NAME=bot-service
+```
 
-Важно: JWT_SECRET в auth_service/.env и bot_service/.env должен совпадать.
+> Важно:
+> JWT_SECRET в `auth_service/.env` и `bot_service/.env` должен совпадать.
 
-Установите зависимости:
-В папке bot_service выполните
+Установить зависимости:
 
+```bash
 uv sync
+```
 
-Запуск Bot Service health API:
+---
 
-В отдельном терминале - из папки bot_service выполните 
+# Запуск Bot Service API
 
+Из каталога `bot_service`:
+
+```bash
 uv run uvicorn app.main:app --reload --host 0.0.0.0 --port 8001
+```
 
 Health-check:
 
+```text
 http://127.0.0.1:8001/health
+```
 
+---
 
-
-Запуск контейнера с Redis и RabbitMQ
+# Запуск Redis и RabbitMQ
 
 Из корня проекта:
 
-docker-compose up -d
-
-Если используется новая версия Compose:
-
+```bash
 docker compose up -d
+```
+
+или:
+
+```bash
+docker-compose up -d
+```
 
 Проверка контейнеров:
 
+```bash
 docker ps
+```
 
 RabbitMQ UI:
 
+```text
 http://localhost:15672
+```
 
 Логин и пароль:
 
+```text
 guest / guest
+```
 
+---
 
-Запуск Celery Worker
+# Запуск Celery Worker
 
-В отдельном терминале - из папки bot_service выполните 
+Из каталога `bot_service`:
 
+```bash
 uv run celery -A app.infra.celery_app:celery_app worker --loglevel=info
+```
 
 В выводе должно быть:
 
+```text
 [tasks]
  . llm_request
+```
 
 и:
 
+```text
 celery ready
+```
 
+---
 
-Запуск Telegram-бота
+# Запуск Telegram-бота
 
-В отдельном терминале - из папки bot_service выполните 
+Из каталога `bot_service`:
 
+```bash
 uv run python -m app.bot.run_bot
+```
 
+---
 
-Основные команды запуска - собрано в одно место файла.
+# Основные команды запуска
 
-Терминал 1 — инфраструктура
-docker-compose up -d
+## Терминал 1 — инфраструктура
 
-или:
-
+```bash
 docker compose up -d
+```
 
-Терминал 2 — Auth Service
-из папки auth_service
+---
+
+## Терминал 2 — Auth Service
+
+Из каталога `auth_service`:
+
+```bash
 uv run uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
 
-Терминал 3 — Bot Service API
-из папки bot_service
+---
+
+## Терминал 3 — Bot Service API
+
+Из каталога `bot_service`:
+
+```bash
 uv run uvicorn app.main:app --reload --host 0.0.0.0 --port 8001
+```
 
-Терминал 4 — Celery Worker
-из папки bot_service
+---
+
+## Терминал 4 — Celery Worker
+
+Из каталога `bot_service`:
+
+```bash
 uv run celery -A app.infra.celery_app:celery_app worker --loglevel=info
+```
 
-Терминал 5 — Telegram Bot
-из папки bot_service
+---
+
+## Терминал 5 — Telegram Bot
+
+Из каталога `bot_service`:
+
+```bash
 uv run python -m app.bot.run_bot
+```
 
+---
 
-Остановка проекта
+# Автоматический запуск проекта
 
-Остановить сервисы в терминалах:
+Для удобства используются скрипты:
 
-Ctrl+C
-
-Остановить Docker-инфраструктуру:
-
-docker-compose down
-
-или:
-
-docker compose down
-
-
-для удобства есть скрипты запуска и остановки проекта
-
+```text
 start.sh
 stop.sh
+```
 
-Сначала нужно сделать скрипты исполняемым
+Сделать их исполняемыми:
 
+```bash
 chmod +x start.sh
 chmod +x stop.sh
+```
 
-Запуск проекта
+Запуск проекта:
 
+```bash
 ./start.sh
+```
 
-Остановка проекта
+Остановка проекта:
 
+```bash
 ./stop.sh
+```
 
+---
 
-Пользовательский сценарий
+# Пользовательский сценарий
 
+1. Открыть Swagger:
 
-# После запуска проекта в любом браузере обратиться по адресу
-
-# если с локального компьютера
+```text
 http://localhost:8000/docs
+```
 
-# если другого компьютера
-http://ip-address:8000/docs
-# ip-address - ip адрес компьютера на котором запущен проект, в firewall должны быть соответствующие правила.
+2. Зарегистрировать пользователя через:
 
-Зарегистрировать пользователя:
+```text
 POST /auth/register
-# Необходимо пройти процедуру регистрации пользователя - для этого нужны логин и пароль
-# в качестве логина используйте email
-# Выберите пункт - POST/auth/register и нажмите кнопку 'Try it out'
-# в поле 'Request body' заполните логин и пароль, и потом нажмите 'Execute'
+```
 
+3. Выполнить логин через кнопку `Authorize`.
 
-# Далее выполнить логин:
-# Выберите пункт - POST /auth/login и нажмите кнопку 'Try it out'
-# заполните логин и пароль, и потом нажмите 'Execute'
-# Скопировать полученный JWT-токен.
+4. Скопировать JWT-токен.
 
-#Отправить токен Telegram-боту:
-/token <jwt-токен>
+5. Отправить токен Telegram-боту:
 
-#После подтверждения можно начать общаться с ботом - отправьте свой вопрос:
-Например - "Что такое Celery?"
+```text
+/token <jwt-token>
+```
 
-#Бот отправит задачу в RabbitMQ, Celery Worker обработает её, вызовет OpenRouter и вернёт ответ в Telegram.
+6. Отправить вопрос боту.
 
+Например:
 
-Запуск тестов
+```text
+Что такое Celery?
+```
 
-Auth Service
+7. Bot Service:
+- валидирует JWT;
+- публикует задачу в RabbitMQ;
+- Celery Worker вызывает OpenRouter;
+- ответ возвращается пользователю в Telegram.
 
-в каталоге auth_service выполнить
+---
 
+# Виды тестирования
+
+Проект содержит:
+
+- unit tests;
+- integration tests;
+- mock tests.
+
+Используются:
+
+- pytest;
+- pytest-asyncio;
+- fakeredis;
+- pytest-mock;
+- respx.
+
+---
+
+# Запуск тестов
+
+## Auth Service
+
+Из каталога `auth_service`:
+
+```bash
 uv run pytest
+```
 
-Bot Service
+---
 
-в каталоге bot_service выполнить
+## Bot Service
 
+Из каталога `bot_service`:
+
+```bash
 uv run pytest
+```
 
+---
 
-Screenshots
+# Скриншоты работы проекта
 
-# Далее скриншоты - демонстрация работы Auth_service и Телеграмм бота.
+## Регистрация пользователя
 
-
-# Регистрация пользователя
 ![Register](screenshots/register.png)
 
-# Логин пользователя - логин и получение JWT
+---
+
+## Логин пользователя и получение JWT
+
 ![Login](screenshots/login.png)
 
-# Чат в Telegram-bot
+---
+
+## Работа Telegram-бота
+
 ![Chat](screenshots/chat.png)
 
-# RabbitMQ - Overview
-![RabbitMQ01](screenshots/RabbitMQ01.png)
+---
 
-# RabbitMQ - Queues
-![RabbitMQ02](screenshots/RabbitMQ02.png)
+## RabbitMQ Overview
 
-# Тест Test_Auth_Service
-![Test_Auth_Service](screenshots/test_auth_service.png)
+![RabbitMQ Overview](screenshots/rabbitmq_overview.png)
 
-# Тест Test_Bot_Service
-![Bot_Auth_Service](screenshots/test_bot_service.png)
+---
 
+## RabbitMQ Queues
 
+![RabbitMQ Queues](screenshots/rabbitmq_queues.png)
 
+---
 
+## Тестирование Auth Service
 
+![Auth Tests](screenshots/test_auth_service.png)
 
+---
 
+## Тестирование Bot Service
 
+![Bot Tests](screenshots/test_bot_service.png)
 
+---
 
+# Результат
+
+Проект реализует двухсервисную архитектуру LLM-консультаций:
+
+- Auth Service отвечает за пользователей и JWT;
+- Bot Service отвечает за Telegram и LLM;
+- RabbitMQ используется как broker Celery;
+- Redis используется как backend и хранилище JWT;
+- OpenRouter используется как LLM provider.
+
+Система поддерживает:
+
+- JWT-аутентификацию;
+- асинхронную обработку задач;
+- Telegram-интерфейс;
+- unit / integration / mock тестирование.
