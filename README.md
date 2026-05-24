@@ -680,3 +680,4 @@ uv run pytest
 - асинхронную обработку задач;
 - Telegram-интерфейс;
 - unit / integration / mock тестирование.
+
